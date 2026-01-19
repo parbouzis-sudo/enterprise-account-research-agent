@@ -3,7 +3,7 @@
  */
 
 import { Router, Request, Response } from "express";
-import { ClaudeService } from "../services/claudeService.js";
+import { ClaudeService } from "../../shared/services/claudeService.js";
 
 export const prospectingRouter = Router();
 

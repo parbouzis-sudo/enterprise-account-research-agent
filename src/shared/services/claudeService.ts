@@ -2,13 +2,13 @@
  * Claude AI Service for enterprise account research and insights
  */
 
-import { Anthropic } from "anthropic";
+import Anthropic from "@anthropic-ai/sdk";
 import {
   Account,
   Contact,
   AccountResearchOutput,
   OutreachMessage,
-} from "@shared/types. js";
+} from "../types.js";
 
 const client = new Anthropic();
 
@@ -38,11 +38,11 @@ ${account.researchNotes || "No previous notes"}
 
     const message = await client.messages.create({
       model: "claude-3-5-sonnet-20241022",
-      max_tokens:  2000,
+      max_tokens:2000,
       messages: [
         {
           role: "user",
-          content:  `You are an expert B2B sales analyst.  Analyze this enterprise account and provide: 
+          content:`You are an expert B2B sales analyst.  Analyze this enterprise account and provide: 
 1. Executive Summary (2-3 sentences)
 2. Key Insights (3-5 bullet points about the company's business, market position, tech stack)
 3. Potential Pain Points (3-5 areas where they might need solutions)
@@ -58,19 +58,19 @@ Format your response as structured JSON with keys: summary, keyInsights, painPoi
     });
 
     const responseText =
-      message.content[0]. type === "text" ? message.content[0].text : "";
+      message.content[0].type === "text" ? message.content[0].text : "";
 
     try {
       const parsed = JSON.parse(responseText);
       return {
         accountId: account.id,
-        ... parsed,
+        ...parsed,
       };
     } catch {
       return {
         accountId: account.id,
         summary: responseText,
-        keyInsights:  [],
+        keyInsights: [],
         painPoints: [],
         buyingIndicators: [],
         recommendedApproach: "",
@@ -106,7 +106,7 @@ Format as:
 Subject: [subject]
 Body: [email body]`,
 
-      phone: `Draft a concise phone script (60-90 seconds) to call ${contact.firstName} ${contact. lastName}, ${contact.title} at ${account.companyName}.
+      phone: `Draft a concise phone script (60-90 seconds) to call ${contact.firstName} ${contact.lastName}, ${contact.title} at ${account.companyName}.
 
 Context:
 ${context}
@@ -120,7 +120,7 @@ Include:
 
 Format as a conversational script with stage directions.`,
 
-      linkedin: `Draft a LinkedIn connection request message and follow-up to ${contact.firstName} ${contact. lastName}, ${contact.title} at ${account.companyName}.
+      linkedin: `Draft a LinkedIn connection request message and follow-up to ${contact.firstName} ${contact.lastName}, ${contact.title} at ${account.companyName}.
 
 Context:
 ${context}
@@ -145,7 +145,7 @@ Requirements:
     });
 
     const content =
-      message.content[0]. type === "text" ? message. content[0].text : "";
+      message.content[0].type === "text" ? message. content[0].text : "";
 
     return {
       id: `msg_${Date.now()}`,
@@ -172,10 +172,10 @@ Requirements:
   }> {
     const message = await client.messages.create({
       model: "claude-3-5-sonnet-20241022",
-      max_tokens:  1500,
-      messages:  [
+      max_tokens:1500,
+      messages: [
         {
-          role:  "user",
+          role: "user",
           content: `Analyze this meeting transcript and provide: 
 1. A brief summary (2-3 sentences) of what was discussed
 2. Key action items (what needs to be done and by whom)
@@ -227,7 +227,7 @@ Format as JSON with keys: summary, actionItems, nextSteps, sentiment`,
 Account Details:
 - Industry: ${account.industry}
 - Size: ${account.companySize}
-- Location: ${account. location}
+- Location: ${account.location}
 
 Key Contacts:
 ${contacts.map((c) => `- ${c.firstName} ${c.lastName} (${c.title})`).join("\n")}

@@ -3,12 +3,12 @@
  */
 
 import { Router, Request, Response } from "express";
-import { ClaudeService } from "../services/claudeService. js";
+import { ClaudeService } from "../../shared/services/claudeService.js";
 
 export const accountRouter = Router();
 
 // GET /api/accounts - List all accounts
-accountRouter.get("/", async (req: Request, res:  Response) => {
+accountRouter.get("/", async (req: Request, res: Response) => {
   try {
     res.json({ accounts: [], total: 0 });
   } catch (error) {
@@ -43,7 +43,7 @@ accountRouter.post("/", async (req: Request, res: Response) => {
 });
 
 // GET /api/accounts/:id - Get account details
-accountRouter.get("/:id", async (req:  Request, res: Response) => {
+accountRouter.get("/:id", async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     res.json({ id, message: "Account details" });
@@ -52,13 +52,13 @@ accountRouter.get("/:id", async (req:  Request, res: Response) => {
   }
 });
 
-// PUT /api/accounts/: id - Update account
-accountRouter. put("/:id", async (req: Request, res: Response) => {
+// PUT /api/accounts/:id - Update account
+accountRouter.put("/:id", async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
     const updates = req.body;
 
-    res.json({ id, ... updates, message: "Account updated" });
+    res.json({ id, ...updates, message: "Account updated" });
   } catch (error) {
     res.status(400).json({ error: "Failed to update account" });
   }

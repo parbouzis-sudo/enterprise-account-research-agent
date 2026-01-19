@@ -6,7 +6,7 @@ import express, { Express, Request, Response, NextFunction } from "express";
 import cors from "cors";
 import "express-async-errors";
 import dotenv from "dotenv";
-import { accountRouter } from "./routes/accounts. js";
+import { accountRouter } from "./routes/accounts.js";
 import { contactRouter } from "./routes/contacts.js";
 import { researchRouter } from "./routes/research.js";
 import { prospectingRouter } from "./routes/prospecting.js";
@@ -20,7 +20,7 @@ const app: Express = express();
 const PORT = process.env.PORT || 3001;
 
 // Middleware
-app. use(cors());
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -46,7 +46,7 @@ app.use((req: Request, res: Response) => {
 app.use(errorHandler);
 
 // Start server
-app. listen(PORT, () => {
+app.listen(PORT, () => {
   console.log(
     `🚀 Server running on http://localhost:${PORT} in ${process.env.NODE_ENV} mode`
   );

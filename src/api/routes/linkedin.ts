@@ -3,7 +3,7 @@
  */
 
 import { Router, Request, Response } from "express";
-import LinkedInService from "../services/linkedinService.js";
+import LinkedInService from "../../shared/services/linkedinService.js";
 
 export const linkedinRouter = Router();
 
@@ -33,7 +33,7 @@ linkedinRouter.post(
       const { filters, accessToken } = req.body;
 
       const linkedinService = new LinkedInService(accessToken);
-      const accounts = await linkedinService. fetchAccountsFromNavigator(filters);
+      const accounts = await linkedinService.fetchAccountsFromNavigator(filters);
 
       res.json({ accounts });
     } catch (error) {
@@ -51,7 +51,7 @@ linkedinRouter.post(
       const { accountId, accessToken } = req.body;
 
       const linkedinService = new LinkedInService(accessToken);
-      const contacts = await linkedinService. fetchContactsFromNavigator(accountId);
+      const contacts = await linkedinService.fetchContactsFromNavigator(accountId);
 
       res.json({ contacts });
     } catch (error) {
