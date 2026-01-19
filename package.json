@@ -1,12 +1,12 @@
 {
   "name": "enterprise-account-research-agent",
   "version": "0.0.1",
-  "description":  "AI-powered enterprise account research and B2B selling platform with Claude AI and LinkedIn integration",
+  "description": "AI-powered enterprise account research and B2B selling platform with Claude AI and LinkedIn integration",
   "type": "module",
   "main": "dist/index.js",
   "scripts": {
     "dev":  "concurrently \"npm run dev:api\" \"npm run dev:web\"",
-    "dev:api":  "tsx watch src/api/server.ts",
+    "dev:api": "tsx watch src/api/server.ts",
     "dev:web": "vite",
     "build": "npm run build:api && npm run build:web",
     "build: api": "tsc",
@@ -17,19 +17,20 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "anthropic": "^0.20.0",
+    "anthropic": "^0.24.3",
     "axios": "^1.6.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
-    "express":  "^4.18.2",
-    "express-async-errors": "^3.1.1",
+    "express": "^4.18.2",
+    "express-async-errors":  "^3.1.1",
     "zod": "^3.22.4",
     "react": "^18.2.0",
-    "react-dom":  "^18.2.0"
+    "react-dom": "^18.2.0",
+    "pg": "^8.11.3"
   },
   "devDependencies": {
     "@types/express": "^4.17.21",
-    "@types/node":  "^20.10.6",
+    "@types/node": "^20.10.6",
     "@types/react":  "^18.2.46",
     "@types/react-dom": "^18.2.18",
     "@vitejs/plugin-react": "^4.2.1",
@@ -38,6 +39,6 @@
     "vite": "^5.0.8",
     "vitest": "^1.1.0",
     "eslint": "^8.56.0",
-    "tsx":  "^4.7.0"
+    "tsx": "^4.7.0"
   }
 }
