@@ -6,13 +6,13 @@ import express, { Express, Request, Response, NextFunction } from "express";
 import cors from "cors";
 import "express-async-errors";
 import dotenv from "dotenv";
-import { accountRouter } from "./routes/accounts. js";
-import { contactRouter } from "./routes/contacts.js";
-import { researchRouter } from "./routes/research.js";
-import { prospectingRouter } from "./routes/prospecting.js";
-import { meetingRouter } from "./routes/meetings.js";
-import { linkedinRouter } from "./routes/linkedin.js";
-import { errorHandler } from "./middleware/errorHandler.js";
+import { accountRouter } from "./routes/accounts";
+import { contactRouter } from "./routes/contacts";
+import { researchRouter } from "./routes/research";
+import { prospectingRouter } from "./routes/prospecting";
+import { meetingRouter } from "./routes/meetings";
+import { linkedinRouter } from "./routes/linkedin";
+import { errorHandler } from "./middleware/errorHandler";
 
 dotenv.config();
 

@@ -3,7 +3,7 @@
  */
 
 import { Router, Request, Response } from "express";
-import LinkedInService from "../services/linkedinService.js";
+import LinkedInService from "../services/linkedinService";
 
 export const linkedinRouter = Router();
 

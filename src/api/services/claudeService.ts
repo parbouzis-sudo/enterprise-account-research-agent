@@ -2,13 +2,13 @@
  * Claude AI Service for enterprise account research and insights
  */
 
-import { Anthropic } from "anthropic";
+import Anthropic from "@anthropic-ai/sdk";
 import {
   Account,
   Contact,
   AccountResearchOutput,
   OutreachMessage,
-} from "@shared/types. js";
+} from "@shared/types";
 
 const client = new Anthropic();
 
