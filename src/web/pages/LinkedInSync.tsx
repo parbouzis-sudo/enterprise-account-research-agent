@@ -8,9 +8,12 @@ export function LinkedInSync() {
   const [syncStatus, setSyncStatus] = useState("idle");
   const [accountsCount, setAccountsCount] = useState(0);
   const [contactsCount, setContactsCount] = useState(0);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const handleSyncLinkedIn = async () => {
     setSyncStatus("syncing");
+    setErrorMessage(null);
+
     try {
       const response = await fetch("/api/linkedin/sync", {
         method:  "POST",
@@ -20,12 +23,31 @@ export function LinkedInSync() {
           contactUrls: [],
         }),
       });
+
+      // Check if the response was successful
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({
+          error: "Failed to sync LinkedIn data",
+          details: `Server returned ${response.status}: ${response.statusText}`
+        }));
+
+        throw new Error(errorData.details || errorData.error || "Failed to sync LinkedIn data");
+      }
+
       const data = await response.json();
+
+      // Validate the response has expected data
+      if (!data) {
+        throw new Error("Received empty response from server");
+      }
+
       setAccountsCount(data. accountIds?. length || 0);
       setContactsCount(data.contactIds?.length || 0);
       setSyncStatus("completed");
     } catch (error) {
-      console.error("Sync error:", error);
+      const errorMsg = error instanceof Error ? error.message : "An unknown error occurred during sync";
+      console.error("Sync error:", errorMsg);
+      setErrorMessage(errorMsg);
       setSyncStatus("error");
     }
   };
@@ -69,9 +91,9 @@ export function LinkedInSync() {
             </p>
           )}
           {syncStatus === "error" && (
-            <p className="error-message">
-              ❌ Sync failed. Please try again.
-            </p>
+            <div className="error-message" style={{ color: 'red', padding: '10px', border: '1px solid red', borderRadius: '4px', marginTop: '10px' }}>
+              <strong>❌ Sync failed:</strong> {errorMessage || "Please try again."}
+            </div>
           )}
         </div>
 

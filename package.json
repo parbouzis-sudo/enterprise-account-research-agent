@@ -9,7 +9,7 @@
     "dev:api": "tsx watch src/api/server.ts",
     "dev:web": "vite",
     "build": "npm run build:api && npm run build:web",
-    "build: api": "tsc",
+    "build:api": "tsc",
     "build:web": "vite build",
     "start": "node dist/api/server.js",
     "test": "vitest",
@@ -17,7 +17,7 @@
     "type-check": "tsc --noEmit"
   },
   "dependencies": {
-    "anthropic": "^0.30.0"
+    "anthropic": "^0.30.0",
     "axios": "^1.6.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",

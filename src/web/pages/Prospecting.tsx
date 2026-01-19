@@ -12,11 +12,15 @@ export function Prospecting() {
   const [context, setContext] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleGenerateMessage = async () => {
     if (!selectedContact) return;
 
     setLoading(true);
+    setError(null);
+    setMessage("");
+
     try {
       const response = await fetch("/api/prospecting/generate-message", {
         method: "POST",
@@ -27,10 +31,30 @@ export function Prospecting() {
           context,
         }),
       });
+
+      // Check if the response was successful
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({
+          error: "Failed to generate message",
+          details: `Server returned ${response.status}: ${response.statusText}`
+        }));
+
+        throw new Error(errorData.details || errorData.error || "Failed to generate message");
+      }
+
       const data = await response.json();
+
+      // Validate the response has expected data
+      if (!data || !data.content) {
+        throw new Error("Received invalid response from server");
+      }
+
       setMessage(data.content);
     } catch (error) {
-      console.error("Error generating message:", error);
+      const errorMsg = error instanceof Error ? error.message : "An unknown error occurred";
+      console.error("Error generating message:", errorMsg);
+      setError(errorMsg);
+      setMessage("");
     } finally {
       setLoading(false);
     }
@@ -87,6 +111,11 @@ export function Prospecting() {
 
         <div className="message-output">
           <h2>Generated Message</h2>
+          {error && (
+            <div className="error-message" style={{ color: 'red', padding: '10px', border: '1px solid red', borderRadius: '4px', marginBottom: '10px' }}>
+              <strong>Error:</strong> {error}
+            </div>
+          )}
           {message ? (
             <div className="message-content">{message}</div>
           ) : (

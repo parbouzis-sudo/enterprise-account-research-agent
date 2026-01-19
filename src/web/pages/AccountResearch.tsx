@@ -8,11 +8,15 @@ export function AccountResearch() {
   const [selectedAccount, setSelectedAccount] = useState<string | null>(null);
   const [research, setResearch] = useState<string>("");
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleAnalyze = async () => {
     if (!selectedAccount) return;
 
     setLoading(true);
+    setError(null);
+    setResearch("");
+
     try {
       const response = await fetch("/api/research/analyze", {
         method: "POST",
@@ -21,10 +25,30 @@ export function AccountResearch() {
           accountId: selectedAccount,
         }),
       });
+
+      // Check if the response was successful
+      if (!response.ok) {
+        const errorData = await response.json().catch(() => ({
+          error: "Failed to analyze account",
+          details: `Server returned ${response.status}: ${response.statusText}`
+        }));
+
+        throw new Error(errorData.details || errorData.error || "Failed to analyze account");
+      }
+
       const data = await response.json();
+
+      // Validate the response has expected data
+      if (!data) {
+        throw new Error("Received empty response from server");
+      }
+
       setResearch(JSON.stringify(data, null, 2));
     } catch (error) {
-      console.error("Error analyzing account:", error);
+      const errorMessage = error instanceof Error ? error.message : "An unknown error occurred";
+      console.error("Error analyzing account:", errorMessage);
+      setError(errorMessage);
+      setResearch("");
     } finally {
       setLoading(false);
     }
@@ -55,6 +79,11 @@ export function AccountResearch() {
 
         <div className="research-results">
           <h2>Research Insights</h2>
+          {error && (
+            <div className="error-message" style={{ color: 'red', padding: '10px', border: '1px solid red', borderRadius: '4px', marginBottom: '10px' }}>
+              <strong>Error:</strong> {error}
+            </div>
+          )}
           {research ?  (
             <pre className="json-display">{research}</pre>
           ) : (
